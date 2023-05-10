@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+     {% if category %}
+            {{category.description|truncatewords:155}}
+     {% else %}
+        Welcome to Bigpanda Indias largest Online Retail Store
+     {% endif %}
+{% endblock %}
+
+{% block title %}
+     {% if category %}
+            {{category.name}}-Carttohome
+     {% else %}
+        Explore the new Arrivals
+     {% endif %}
+{% endblock %}
+
+{% block content %}
+{% if category %}
+        <div>
+            <div class="row my_row_class">
+                <div class="mx-auto">
+                    <p><a href="{% url 'shop:allProdcat' %}">Our Product collections</a></p>
+                </div>
+            </div>
+        </div>
+{% endif %}
+
+        {% if category %}
+       <div class="mx-auto">
+           <img class="myimage" src="{{ category.image.url }}" alt="{{ category.name }}" >
+
+        </div>
+        <br>
+        <div>
+            <h1 class="text-center  myt_title">{{ category.name }}</h1>
+            <p class="text-justify">{{ category.desc }}</p>
+        </div>
+    {% else %}
+        <div>
+            <img class="myimage image_padding" src="{% static 'image/banner.png' %}" alt="banner" height="500" width="2000">
+        </div>
+        <br>
+        <h1 class="text-center my_title" > Who are we </h1>
+        <h5 class="text-justify">CartToHome is a large online grocer headquartered in Bangalore, India, and currently owned by Tata Group. As of January 2023, the company operates in more than 30 cities in India and processes around 15 million orders per month, formerly known as Bigpanda.</h5><br>
+    {% endif %}
+    <div class="container">
+        <div class="row mx_auto">
+            {% for product in products.object_list %}
+            <div class="my_bottom_margin col-9 col-sm-12 col-md-4 xol-lg-4"><br>
+                <div class="card text-center" style="width:18rem;">
+                    <a href="{{product.get_url}}"><img class="card-img-top" src="{{ product.image.url }}" alt="{{ product.name }}" height="300" width="200"></a>
+                    <div class="card-body">
+                        <h4>{{ product.name }}</h4>
+                        <p>{{ product.price }}</p>
+                    </div>
+
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="mx-auto">
+            {% if products.paginator.num_pages > 1 %}
+            <hr>
+            <div class="text-center">
+                {% for pg in products.paginator.page_range %}
+                <a href="?page={{pg}}" class="btn btn-light btn-sm {% if products.number == pg %} active {% endif %} ">{{pg}}</a>
+                {% endfor %}
+
+            </div>
+                 {% endif %}
+        </div>
+        <br>
+        <br>
+
+<br>
+    </div>
+
+{% endblock %}
+
+
+

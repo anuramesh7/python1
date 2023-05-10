@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+
+   Cart page
+{% endblock %}
+{% block title %}
+
+   Your Cart
+{% endblock %}
+{% block content %}
+{% if not cart_items %}
+<div>
+    <div class="text center">
+        <br>
+        <h1 class="text-center my_tittle">Your cart looks empty!
+        </h1>
+<br>
+        <p class="text-center">
+            Start Shopping<a href="{% url 'shop:allProdcat' %}">Here</a>
+        </p>
+
+
+    </div>
+</div>
+{% else %}
+<div>
+    <div class=" text-center">
+        <br>
+        <h1 class="text-center">lets take CartToHome</h1>
+        <br>
+    </div>
+</div>
+<div class="row mx-auto">
+    <div class="col-12 col-sm-12 col-md-12 col-lg-6 text-center">
+        <table class="table my_table">
+            <thead class="cart_head">
+            <tr>
+                <th colspan="5">
+                    Your items
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in cart_items %}
+            <tr>
+                <td>
+                    <a href="{{ item.product.get_url}}"><img src="{{item.product.image.url}}" alt="" class="float-left" height="100" width="100"></a>
+
+                </td>
+                <td class="text-left">
+                    {{item.product.name}}
+                    <br>
+                    sku code: {{item.product.id}}
+                    <br>
+                     ₹ {{item.product.price}}
+                    <br>
+                    qty:{{item.qty}} x ₹ {{item}}
+                </td>
+                <td>
+                    ₹ {{item.sub_total}}
+                </td>
+                {% if item.qty < item.product.stock %}
+                <td>
+                    <a href="{%url 'cart:add_cart' item.product.id %} " class="custom_a" ><i class="fa fa-plus-circle custom_icon"></i></a>
+                    &nbsp;&nbsp;
+                    <a href="{%url 'cart:cart_remove' item.product.id %}" class="custom_a" ><i class="fa fa-minus-circle" ></i></a>
+                    &nbsp;&nbsp;
+                    <a href="{%url 'cart:delete' item.product.id %}" class="custom_icon"><i class="fa fa-trash-alt" ></i></a>
+                </td>
+                {% else %}
+                <td>
+                    &nbsp;
+                    <a href="{%url 'cart:cart_remove' item.product.id %}" class="custom_a" ><i class="fa fa-minus-circle" ></i></a>
+                    &nbsp;&nbsp;
+                    <a href="{%url 'cart:delete' item.product.id %}" class="custom_icon"><i class="fa fa-trash-alt"></i></a>
+
+
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+            </tbody>
+
+        </table>
+
+    </div>
+    <div class="col-12 col-sm-12-col-md-12 col-lg-6 text-center">
+        <table class="table my_custom_table">
+            <thead class="my_custom_thead">
+            <tr>
+                <th>
+                    Checkout
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    Kindly review yor cart before proceeding
+                </td>
+            </tr>
+            <tr>
+                <td class="text-left">
+                    Amount Payable is :<strong> {{ total }}</strong>
+
+                </td>
+            </tr>
+            </tbody>
+        </table>
+<div class="mx-auto">
+    <a href="{%url 'shop:allProdcat' %}" class="btn btn-secondary btn-block my_custom_button"> Continue Shopping</a>
+    <br>
+    <br>
+   <div>
+  <h3 class="text-center"><b>Payments</b></h3>
+  <br>
+  <div>
+    <p><i class="fas fa-credit-card"></i> <b>Debit/Credit/ATM Card</b></p>
+    <p>Please add and secure your card as per RBI guidelines</p>
+    <input type="text" name="card-number" placeholder="Card number" maxlength="19">
+    <br>
+    <div>
+      <input type="text" name="cardexpiry" placeholder="MM/YY" maxlength="5"><br>
+      <input type="password" name="cvv" placeholder="CVV" maxlength="3">
+    </div>
+  </div>
+  <br>
+  <a href=" {% url 'shop:allProdcat' %}"> <button class="btn btn-primary" type="submit">Get OTP</button></a>
+</div>
+
+</div>
+    </div>
+</div>
+
+{% endif%}
+
+
+
+{% endblock %}
